@@ -1,63 +1,77 @@
 {
   "date": "2026-01-27",
-  "time": "00:02:02",
+  "time": "00:52:52",
   "market_sentiment": "bullish",
   "hot_sectors": [
+    "AI",
     "금융",
-    "자율주행",
-    "AI"
+    "2차전지"
   ],
   "top_10_stocks": [
     {
       "rank": 1,
-      "stock_name": "네이버",
-      "score": 22.0,
-      "reason": "자율주행 섹터 소속, 상승 가능성 높음",
-      "mention_count": 2
+      "stock_name": "삼성전자",
+      "score": 45.5,
+      "reason": "반도체 섹터 소속, 강력한 상승 기대감, 실적 발표 + AI 반도체 리더",
+      "mention_count": 3
     },
     {
       "rank": 2,
-      "stock_name": "한화에어로스페이스",
-      "score": 18.75,
-      "reason": "우주항공 섹터 소속, 일반적 상승 기대",
-      "mention_count": 1
+      "stock_name": "네이버",
+      "score": 28.75,
+      "reason": "자율주행 섹터 소속, 상승 가능성 높음, AI 기술 고도화 + 플랫폼 확대",
+      "mention_count": 2
     },
     {
       "rank": 3,
-      "stock_name": "아르테미스",
-      "score": 18.75,
-      "reason": "우주항공 섹터 소속, 일반적 상승 기대",
+      "stock_name": "지니틱스",
+      "score": 19.5,
+      "reason": "반도체 섹터 소속, 일반적 상승 기대",
       "mention_count": 1
     },
     {
       "rank": 4,
-      "stock_name": "SK증권",
-      "score": 16.5,
-      "reason": "금융 섹터 소속, 일반적 상승 기대, 정책 수혜 기대",
+      "stock_name": "LG",
+      "score": 18.75,
+      "reason": "AI 섹터 소속, 일반적 상승 기대",
       "mention_count": 1
     },
     {
       "rank": 5,
-      "stock_name": "현대차",
-      "score": 16.5,
-      "reason": "자율주행 섹터 소속, 일반적 상승 기대",
+      "stock_name": "삼성중공업",
+      "score": 18.0,
+      "reason": "조선 섹터 소속, 일반적 상승 기대",
       "mention_count": 1
     },
     {
       "rank": 6,
       "stock_name": "KB금융",
-      "score": 16.5,
-      "reason": "금융 섹터 소속, 일반적 상승 기대, 정책 수혜 기대",
+      "score": 17.25,
+      "reason": "금융 섹터 소속, 일반적 상승 기대, 자사주 소각 의무화 정책 수혜",
       "mention_count": 1
     },
     {
       "rank": 7,
+      "stock_name": "SK증권",
+      "score": 17.25,
+      "reason": "금융 섹터 소속, 일반적 상승 기대, 자사주 소각 의무화 정책 수혜",
+      "mention_count": 1
+    },
+    {
+      "rank": 8,
+      "stock_name": "현대차",
+      "score": 17.25,
+      "reason": "자율주행 섹터 소속, 일반적 상승 기대",
+      "mention_count": 1
+    },
+    {
+      "rank": 9,
       "stock_name": "LG에너지솔루션",
-      "score": 15.0,
+      "score": 15.75,
       "reason": "2차전지 섹터 소속, 일반적 상승 기대",
       "mention_count": 1
     }
   ],
-  "total_news_analyzed": 6,
-  "total_stocks_mentioned": 7
+  "total_news_analyzed": 8,
+  "total_stocks_mentioned": 9
 }

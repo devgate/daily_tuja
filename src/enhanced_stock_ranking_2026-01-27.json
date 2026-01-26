@@ -1,0 +1,93 @@
+{
+  "date": "2026-01-27",
+  "time": "07:32:05",
+  "market_sentiment": "bullish",
+  "hot_sectors": [
+    "반도체",
+    "글로벌테크",
+    "AI"
+  ],
+  "domestic_news_count": 8,
+  "global_news_count": 8,
+  "total_news_analyzed": 16,
+  "total_stocks_mentioned": 20,
+  "global_market_sentiment": {
+    "sentiment": "NEUTRAL",
+    "sp500_change": 0,
+    "nasdaq_change": 0,
+    "semicon_change": 0,
+    "avg_change": 0.0
+  },
+  "top_10_stocks": [
+    {
+      "rank": 1,
+      "stock_name": "TSMC",
+      "score": 187.0,
+      "reason": "반도체 섹터 소속, 매우 강력한 상승 모멘텀, TSMC 실적 폭발 + 글로벌 AI 칩 수요 과열",
+      "mention_count": 6
+    },
+    {
+      "rank": 2,
+      "stock_name": "Broadcom",
+      "score": 122.4,
+      "reason": "반도체 섹터 소속, 매우 강력한 상승 모멘텀, AI 인프라 확대 + 맞춤형 실리콘 수혜",
+      "mention_count": 4
+    },
+    {
+      "rank": 3,
+      "stock_name": "삼성전자",
+      "score": 102.0,
+      "reason": "반도체 섹터 소속, 매우 강력한 상승 모멘텀, 글로벌 AI 반도체 리더 + 실적 기대감",
+      "mention_count": 3
+    },
+    {
+      "rank": 4,
+      "stock_name": "SK하이닉스",
+      "score": 88.4,
+      "reason": "반도체 섹터 소속, 매우 강력한 상승 모멘텀, TSMC 실적 폭발 + 글로벌 AI 칩 수요 과열",
+      "mention_count": 2
+    },
+    {
+      "rank": 5,
+      "stock_name": "NVIDIA",
+      "score": 79.9,
+      "reason": "반도체 섹터 소속, 매우 강력한 상승 모멘텀, AI 칩 수익성 우려 vs 수요 증가 복합",
+      "mention_count": 2
+    },
+    {
+      "rank": 6,
+      "stock_name": "TSM",
+      "score": 76.5,
+      "reason": "반도체 섹터 소속, 매우 강력한 상승 모멘텀",
+      "mention_count": 3
+    },
+    {
+      "rank": 7,
+      "stock_name": "AMD",
+      "score": 42.5,
+      "reason": "반도체 섹터 소속, 강력한 상승 기대감",
+      "mention_count": 2
+    },
+    {
+      "rank": 8,
+      "stock_name": "OpenAI",
+      "score": 38.75,
+      "reason": "AI 섹터 소속, 강력한 상승 기대감, Titan 칩 발표 + 독립 AI 칩 생태계 구축",
+      "mention_count": 1
+    },
+    {
+      "rank": 9,
+      "stock_name": "한화에어로스페이스",
+      "score": 31.25,
+      "reason": "우주항공 섹터 소속, 강력한 상승 기대감",
+      "mention_count": 2
+    },
+    {
+      "rank": 10,
+      "stock_name": "KB금융",
+      "score": 28.75,
+      "reason": "금융 섹터 소속, 상승 가능성 높음, Fed 정책 불확실성 vs 금융 주주환원 정책",
+      "mention_count": 1
+    }
+  ]
+}
