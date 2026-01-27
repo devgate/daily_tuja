@@ -1,0 +1,31 @@
+# Log files
+*.log
+
+# Result data files
+enhanced_stock_ranking_*.json
+enhanced_stock_ranking_*.csv
+stock_ranking_*.json
+stock_ranking_*.csv
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
