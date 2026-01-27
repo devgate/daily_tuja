@@ -41,6 +41,27 @@ class GlobalNewsCollector:
                 'content': 'Taiwan Semiconductor Manufacturing Company (TSMC) reported record quarterly earnings with 35% profit jump, driven by unprecedented AI chip demand. CEO expects continued growth as AI applications expand globally.'
             },
             {
+                'title': 'AI 전력 전쟁 시작…데이터센터 전력수요 2030년까지 2배 급증 전망',
+                'link': 'https://www.electimes.com/2026/01/15/ai-power-war',
+                'source': '전기신문',
+                'date': '2026.01.15',
+                'content': 'AI 데이터센터 전력수요가 2030년까지 현재의 두 배 이상 증가할 것으로 IEA가 전망. AI 전용 데이터센터 전력수요는 같은 기간 4배 이상 급증할 전망이며, 가스터빈과 액침냉각 기술 수요가 폭발할 것으로 예상된다.'
+            },
+            {
+                'title': 'Elon Musk mentions Signal app - stock surges 5600%',
+                'link': 'https://www.reuters.com/2026/01/16/elon-musk-signal-stock',
+                'source': 'Reuters',
+                'date': '2026.01.16',
+                'content': 'Elon Musk tweeted "Use Signal" causing Signal Advance stock to surge 5600% in a single day. The Musk effect demonstrates his influence over financial markets, similar to previous Dogecoin rallies.'
+            },
+            {
+                'title': '가스터빈 부족 현상 심화…AI 데이터센터 온사이트 발전 수요 급증',
+                'link': 'https://www.energynews.com/2026/01/17/gas-turbine-shortage',
+                'source': 'Energy News',
+                'date': '2026.01.17',
+                'content': 'AI 데이터센터의 온사이트 발전 수요 증가로 가스터빈 공급 부족 현상이 심화되고 있다. 가스터빈 제작 대기기간이 5~7년으로 연장되며 관련 주식들의 상승세가 이어지고 있다.'
+            },
+            {
                 'title': 'NVIDIA revenue hits $39.3B peak but margin concerns arise',
                 'link': 'https://www.cnbc.com/2026/01/20/nvidia-39-3b-revenue-margin-warning',
                 'source': 'CNBC',
@@ -55,18 +76,25 @@ class GlobalNewsCollector:
                 'content': 'OpenAI unveiled its first custom AI processor "Titan" in collaboration with Broadcom and TSMC, signaling end of "Nvidia tax" and major shift in AI chip landscape.'
             },
             {
+                'title': '액침냉각 시장 개화…루비 울트라 출시로 수요 폭발',
+                'link': 'https://www.techtimes.com/2026/01/21/immersion-cooling',
+                'source': 'Tech Times',
+                'date': '2026.01.21',
+                'content': 'AI 데이터센터의 고도화와 루비 울트라 같은 고성능 칩 출시로 액침냉각 시장이 개화하고 있다. 기존 공랭식 냉각의 한계로 인해 액침냉각 기술로의 전환이 가속화되고 있다.'
+            },
+            {
+                'title': '원자력, AI 데이터센터 핵심 전력원으로 부상',
+                'link': 'https://www.nuclearnews.com/2026/01/22/ai-nuclear-power',
+                'source': 'Nuclear News',
+                'date': '2026.01.22',
+                'content': 'AI 데이터센터가 24시간 안정적 운영과 탄소배출량 감소를 요구하면서 원자력이 핵심 전력원으로 부상하고 있다. 미국 내 데이터센터 전력소비량이 제조업을 합친 것보다 높아질 전망이다.'
+            },
+            {
                 'title': 'Global economy shows resilience at 3.3% growth forecast',
                 'link': 'https://www.imf.org/2026/01/19/global-economy-january-update',
                 'source': 'IMF',
                 'date': '2026.01.19',
                 'content': 'IMF projects global growth at 3.3% for 2026, upward revision driven by technology investment and private sector adaptability despite trade uncertainties.'
-            },
-            {
-                'title': 'Fed independence debate intensifies as rate decisions loom',
-                'link': 'https://www.reuters.com/2026/01/26/fed-independence-battle',
-                'source': 'Reuters',
-                'date': '2026.01.26',
-                'content': 'Federal Reserve faces increasing political pressure but shows little sign of capitulation on monetary policy independence, creating market uncertainty.'
             },
             {
                 'title': 'Chip stocks rally globally on TSMC earnings beat',
@@ -76,18 +104,25 @@ class GlobalNewsCollector:
                 'content': 'Global semiconductor stocks surged after TSMC\'s blockbuster earnings boosted confidence in AI chip demand across the entire industry supply chain.'
             },
             {
-                'title': 'Broadcom emerges as key AI infrastructure beneficiary',
-                'link': 'https://www.fool.com/2026/01/22/broadcom-ai-infrastructure',
-                'source': 'Motley Fool',
+                'title': 'Fed Powell signals possible rate cuts in H2 2026',
+                'link': 'https://www.reuters.com/2026/01/22/fed-powell-rate-cuts',
+                'source': 'Reuters',
                 'date': '2026.01.22',
-                'content': 'Broadcom positioned to benefit from AI infrastructure expansion with custom silicon solutions and networking equipment essential for data centers.'
+                'content': 'Federal Reserve Chairman Jerome Powell indicated potential rate cuts in the second half of 2026, citing inflation progress. Markets reacted positively with tech stocks leading gains.'
             },
             {
-                'title': 'AMD prepares for Q4 earnings with AI growth momentum',
-                'link': 'https://www.amd.com/2026/01/06/q4-earnings-announcement',
-                'source': 'AMD IR',
-                'date': '2026.01.06',
-                'content': 'AMD scheduled to report fiscal Q4 2025 results with analysts expecting continued AI-driven growth in data center and enterprise markets.'
+                'title': 'BlackRock announces new AI-focused ETF with $10B commitment',
+                'link': 'https://www.bloomberg.com/2026/01/23/blackrock-ai-etf',
+                'source': 'Bloomberg',
+                'date': '2026.01.23',
+                'content': 'BlackRock CEO Larry Fink announced a massive $10 billion AI-focused ETF, signaling institutional confidence in AI sector long-term growth despite recent volatility.'
+            },
+            {
+                'title': '한국은행 이창용 총재 "기준금리 동결 기조 유지"',
+                'link': 'https://www.yonhapnews.com/2026/01/24/bok-rate',
+                'source': '연합뉴스',
+                'date': '2026.01.24',
+                'content': '한국은행 이창용 총재가 기준금리 동결 기조를 유지할 것이라고 밝히며, 하반기 경제 상황을 보고 정책 조절 가능성을 시사했다.'
             }
         ]
         

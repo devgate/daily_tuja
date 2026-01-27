@@ -63,7 +63,16 @@ class EnhancedStockRankingSystem:
             global_sentiment_data = self.stock_analyzer._analyze_global_sentiment(global_market_data)
             global_sentiment = global_sentiment_data.get('sentiment', 'NEUTRAL')
             
-            # 10. 결과 포맷팅
+            # 10. 하락 예측 주식 분석
+            declining_stocks = self.stock_analyzer.predict_declining_stocks(all_news, stock_mentions)
+            
+            # 11. 새로운 기술/영역 이슈 감지
+            emerging_trends = self.stock_analyzer.detect_emerging_trends(all_news)
+            
+            # 12. 영향력 있는 기관/인물 분석
+            influential_impact = self.stock_analyzer.analyze_influential_impact(all_news)
+            
+            # 13. 결과 포맷팅
             result = {
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'time': datetime.now().strftime('%H:%M:%S'),
@@ -74,7 +83,10 @@ class EnhancedStockRankingSystem:
                 'total_news_analyzed': len(all_news),
                 'total_stocks_mentioned': len(stock_mentions),
                 'global_market_sentiment': global_sentiment,
-                'top_10_stocks': []
+                'top_10_stocks': [],
+                'declining_stocks': [],
+                'emerging_trends': emerging_trends,
+                'influential_impact': influential_impact
             }
             
             for rank, (stock, score, reason) in enumerate(ranking_results[:10], 1):
@@ -83,7 +95,19 @@ class EnhancedStockRankingSystem:
                     'stock_name': stock,
                     'score': round(score, 2),
                     'reason': reason,
-                    'mention_count': stock_mentions.get(stock, 0)
+                    'mention_count': stock_mentions.get(stock, 0),
+                    'region': self.stock_analyzer.classify_stock_region(stock)
+                })
+            
+            # 하락 예측 주식 추가
+            for rank, (stock, risk_score, reason) in enumerate(declining_stocks, 1):
+                result['declining_stocks'].append({
+                    'rank': rank,
+                    'stock_name': stock,
+                    'risk_score': round(risk_score, 2),
+                    'reason': reason,
+                    'mention_count': stock_mentions.get(stock, 0),
+                    'region': self.stock_analyzer.classify_stock_region(stock)
                 })
             
             # 10. 결과 저장
@@ -94,41 +118,9 @@ class EnhancedStockRankingSystem:
             return result
             
         except Exception as e:
-            logging.error(f"글로벌 시장 심리 분석 오류: {e}")
-            # fallback 기본값 반환
-            return {
-                'sp500': {'change': 0.5, 'current': 5800},
-                'nasdaq': {'change': 1.2, 'current': 19000},
-                'semiconductor_etf': {'change': 2.1, 'current': 280}
-            }
+            logging.error(f"향상된 일일 주식 랭킹 생성 오류: {e}")
+            return None
                 
-            return {
-                'sentiment': sentiment,
-                'sp500_change': sp500_change,
-                'nasdaq_change': nasdaq_change,
-                'semicon_change': semicon_change,
-                'avg_change': avg_change
-            }
-                
-        except Exception as e:
-            logging.error(f"글로벌 시장 심리 분석 오류: {e}")
-            return {
-                'sentiment': 'NEUTRAL',
-                'sp500_change': 0,
-                'nasdaq_change': 0,
-                'semicon_change': 0,
-                'avg_change': 0
-            }
-                
-        except Exception as e:
-            logging.error(f"글로벌 시장 심리 분석 오류: {e}")
-            # fallback 기본값 반환
-            return {
-                'sp500': {'change': 0.5, 'current': 5800},
-                'nasdaq': {'change': 1.2, 'current': 19000},
-                'semiconductor_etf': {'change': 2.1, 'current': 280}
-            }
-
     def save_enhanced_results(self, result: Dict) -> None:
         """향상된 결과 저장"""
         try:
@@ -173,17 +165,60 @@ class EnhancedStockRankingSystem:
         print(f"📰 분석 뉴스: 국내 {result['domestic_news_count']}개 + 글로벌 {result['global_news_count']}개 = 총 {result['total_news_analyzed']}개")
         print(f"📈 언급 주식: {result['total_stocks_mentioned']}개")
         
+        # 새로운 트렌드 표시
+        emerging_trends = result.get('emerging_trends', {})
+        if emerging_trends.get('trend_signals'):
+            print(f"\n🚀 떠오르는 트렌드 시그널")
+            for signal in emerging_trends['trend_signals']:
+                impact_icon = "🔥" if signal['impact'] == 'HIGH' else "⚡" if signal['impact'] == 'MEDIUM' else "💡"
+                print(f"   {impact_icon} {signal['signal']}")
+                print(f"      • 관련: {', '.join(signal['related_stocks'])}")
+                print(f"      • 이유: {signal['reason']}")
+        
+        # 영향력 기관/인물 분석 표시
+        influential_impact = result.get('influential_impact', {})
+        if influential_impact.get('entity_signals'):
+            print(f"\n🎯 영향력 기관/인물 시장 영향 분석")
+            for signal in influential_impact['entity_signals']:
+                impact_icon = "⚡" if signal['impact'] == 'CRITICAL' else "🔥" if signal['impact'] == 'HIGH' else "💡"
+                print(f"   {impact_icon} {signal['signal']}")
+                print(f"      • 시장효과: {signal['market_effect']} ({signal['expected_move']})")
+                print(f"      • 관련 섹터: {', '.join(signal['related_sectors'])}")
+        
+        # 시장 영향 예측
+        if influential_impact.get('market_impact_forecast'):
+            forecast = influential_impact['market_impact_forecast']
+            level_icon = "⚡" if forecast['level'] == 'CRITICAL' else "🔥" if forecast['level'] == 'HIGH' else "💡"
+            print(f"\n{level_icon} 시장 영향 예측: {forecast['level']}")
+            print(f"   • 설명: {forecast['description']}")
+            print(f"   • 변동성: {forecast['volatility']}")
+            print(f"   • 투자 전략: {forecast['advice']}")
+        
         print("\n" + "─"*80)
         print("🏆 글로벌 반영 TOP 10 예상 상승주")
         print("─"*80)
         
         for stock_info in result['top_10_stocks']:
-            print(f"\n{stock_info['rank']:2d}위 | {stock_info['stock_name']}")
+            region_flag = "🇰🇷" if stock_info['region'] == "한국" else "🇺🇸" if stock_info['region'] == "미국" else "🌍"
+            print(f"\n{stock_info['rank']:2d}위 | {region_flag} {stock_info['stock_name']} ({stock_info['region']})")
             print(f"     점수: {stock_info['score']:6.1f} | 언급횟수: {stock_info['mention_count']}")
             print(f"     선정이유: {stock_info['reason']}")
         
+        # 하락 예측 주식 섹션
+        if result.get('declining_stocks'):
+            print("\n" + "─"*80)
+            print("⚠️  하락 리스크 주식 (매도 고려)")
+            print("─"*80)
+            
+            for stock_info in result['declining_stocks']:
+                region_flag = "🇰🇷" if stock_info['region'] == "한국" else "🇺🇸" if stock_info['region'] == "미국" else "🌍"
+                print(f"\n{stock_info['rank']:2d}위 | {region_flag} {stock_info['stock_name']} ({stock_info['region']})")
+                print(f"     위험점수: {stock_info['risk_score']:6.1f} | 언급횟수: {stock_info['mention_count']}")
+                print(f"     위험요인: {stock_info['reason']}")
+        
         print("\n" + "="*80)
         print("⚠️  투자 주의사항: 본 분석은 뉴스 기반 예측으로, 글로벌 변수가 많습니다.")
+        print("🇰🇷 한국주식 / 🇺🇸 미국주식 / 🌍 기타")
         print("="*80)
 
     def validate_with_historical_data(self, days_back: int = 30) -> Dict:
