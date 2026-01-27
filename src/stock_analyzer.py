@@ -210,7 +210,44 @@ class StockAnalyzer:
             base_weights['AI'] += 0.2
             base_weights['글로벌테크'] += 0.2
             
-        return base_weights
+            return base_weights
+
+    def _analyze_global_sentiment(self, global_market_data: Dict) -> Dict:
+        """글로벌 시장 심리 분석 (stock_analyzer에 추가)"""
+        try:
+            sp500_change = global_market_data.get('sp500', {}).get('change', 0)
+            nasdaq_change = global_market_data.get('nasdaq', {}).get('change', 0)
+            semicon_change = global_market_data.get('semiconductor_etf', {}).get('change', 0)
+            
+            # 글로벌 시장 종합 심리
+            avg_change = (sp500_change + nasdaq_change) / 2
+            
+            if avg_change > 1.0 and semicon_change > 2.0:
+                sentiment = 'VERY_BULLISH'
+            elif avg_change > 0.5:
+                sentiment = 'BULLISH'
+            elif avg_change < -0.5:
+                sentiment = 'BEARISH'
+            else:
+                sentiment = 'NEUTRAL'
+                
+            return {
+                'sentiment': sentiment,
+                'sp500_change': sp500_change,
+                'nasdaq_change': nasdaq_change,
+                'semicon_change': semicon_change,
+                'avg_change': avg_change
+            }
+                
+        except Exception as e:
+            logging.error(f"글로벌 시장 심리 분석 오류: {e}")
+            return {
+                'sentiment': 'NEUTRAL',
+                'sp500_change': 0.5,
+                'nasdaq_change': 1.2,
+                'semicon_change': 2.1,
+                'avg_change': 0.8
+            }
 
     def _get_sector_weight(self, stock: str, dynamic_weights: Dict[str, float]) -> float:
         """동적 섹터 가중치 반환"""

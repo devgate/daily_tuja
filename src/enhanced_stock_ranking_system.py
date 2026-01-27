@@ -5,9 +5,8 @@ from typing import List, Dict, Tuple, Optional
 import json
 import logging
 from news_collector import NewsCollector
-from global_news_collector import GlobalNewsCollector
+from global_news_collector_fixed import GlobalNewsCollector
 from stock_analyzer import StockAnalyzer
-
 # import schedule  # 동적 import로 LSP 오류 회피
 
 class EnhancedStockRankingSystem:
@@ -61,7 +60,8 @@ class EnhancedStockRankingSystem:
             global_market_data = self.global_news_collector.collect_global_market_data()
             
             # 9. 글로벌 시장 심리 분석
-            global_sentiment = self._analyze_global_sentiment(global_market_data)
+            global_sentiment_data = self.stock_analyzer._analyze_global_sentiment(global_market_data)
+            global_sentiment = global_sentiment_data.get('sentiment', 'NEUTRAL')
             
             # 10. 결과 포맷팅
             result = {
@@ -95,30 +95,12 @@ class EnhancedStockRankingSystem:
             
         except Exception as e:
             logging.error(f"글로벌 시장 심리 분석 오류: {e}")
+            # fallback 기본값 반환
             return {
                 'sp500': {'change': 0.5, 'current': 5800},
                 'nasdaq': {'change': 1.2, 'current': 19000},
                 'semiconductor_etf': {'change': 2.1, 'current': 280}
             }
-
-    def _analyze_global_sentiment(self, global_market_data: Dict) -> Dict:
-        """글로벌 시장 심리 분석"""
-        try:
-            sp500_change = global_market_data.get('sp500', {}).get('change', 0)
-            nasdaq_change = global_market_data.get('nasdaq', {}).get('change', 0)
-            semicon_change = global_market_data.get('semiconductor_etf', {}).get('change', 0)
-            
-            # 글로벌 시장 종합 심리
-            avg_change = (sp500_change + nasdaq_change) / 2
-            
-            if avg_change > 1.0 and semicon_change > 2.0:
-                sentiment = 'VERY_BULLISH'
-            elif avg_change > 0.5:
-                sentiment = 'BULLISH'
-            elif avg_change < -0.5:
-                sentiment = 'BEARISH'
-            else:
-                sentiment = 'NEUTRAL'
                 
             return {
                 'sentiment': sentiment,
@@ -181,35 +163,12 @@ class EnhancedStockRankingSystem:
         print("="*80)
         
         global_sentiment_data = result.get('global_sentiment', {})
-        global_sentiment = global_sentiment_data.get('sentiment', 'NEUTRAL') if isinstance(global_sentiment_data, dict) else str(global_sentiment_data)
+        if isinstance(global_sentiment_data, dict):
+            global_sentiment = global_sentiment_data.get('sentiment', 'NEUTRAL')
+        else:
+            global_sentiment = str(global_sentiment_data) if global_sentiment_data else 'NEUTRAL'
         
         print(f"\n🌍 시장 심리: 국내 {result['market_sentiment'].upper()} / 글로벌 {global_sentiment.upper()}")
-        print(f"🔥 핫 섹터: {', '.join(result['hot_sectors'])}")
-        print(f"📰 분석 뉴스: 국내 {result['domestic_news_count']}개 + 글로벌 {result['global_news_count']}개 = 총 {result['total_news_analyzed']}개")
-        print(f"📈 언급 주식: {result['total_stocks_mentioned']}개")
-        
-        print("\n" + "─"*80)
-        print("🏆 글로벌 반영 TOP 10 예상 상승주")
-        print("─"*80)
-        
-        for stock_info in result['top_10_stocks']:
-            print(f"\n{stock_info['rank']:2d}위 | {stock_info['stock_name']}")
-            print(f"     점수: {stock_info['score']:6.1f} | 언급횟수: {stock_info['mention_count']}")
-            print(f"     선정이유: {stock_info['reason']}")
-        
-        print("\n" + "="*80)
-        print("⚠️  투자 주의사항: 본 분석은 뉴스 기반 예측으로, 글로벌 변수가 많습니다.")
-        print("="*80)
-        """향상된 결과 출력"""
-        if not result:
-            print("결과가 없습니다.")
-            return
-            
-        print("\n" + "="*80)
-        print("📈 향상된 다음날 오전 단타용 주식 TOP 10 (글로벌 데이터 포함)")
-        print("="*80)
-        
-        print(f"\n🌍 시장 심리: 국내 {result['market_sentiment'].upper()} / 글로벌 {result['global_sentiment']}")
         print(f"🔥 핫 섹터: {', '.join(result['hot_sectors'])}")
         print(f"📰 분석 뉴스: 국내 {result['domestic_news_count']}개 + 글로벌 {result['global_news_count']}개 = 총 {result['total_news_analyzed']}개")
         print(f"📈 언급 주식: {result['total_stocks_mentioned']}개")

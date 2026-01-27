@@ -95,8 +95,8 @@ class GlobalNewsCollector:
         selected_count = random.randint(6, min(10, len(sample_news)))
         return random.sample(sample_news, selected_count)
 
-def collect_global_market_data(self) -> Dict:
-        """글로벌 시장 데이터 수집 (개선된 API 호출)"""
+    def collect_global_market_data(self) -> Dict:
+        """글로벌 시장 데이터 수집 (개선된 안정성)"""
         try:
             # API 호출 개선 - 더 안정적인 방식으로 시도
             tickers = {
@@ -110,20 +110,42 @@ def collect_global_market_data(self) -> Dict:
             
             for name, ticker_symbol in tickers.items():
                 try:
+                    # yfinance 세션 새로고침으로 안정성 확보
                     ticker = yf.Ticker(ticker_symbol)
-                    hist = ticker.history(period='2d')  # 2일 데이터로 시도
                     
-                    if len(hist) > 0:
-                        current = hist['Close'].iloc[-1]
-                        prev_close = hist['Close'].iloc[-2] if len(hist) > 1 else current
-                        change = ((current - prev_close) / prev_close * 100) if prev_close != 0 else 0
-                        
-                        result[name] = {
-                            'current': float(current),
-                            'change': float(change)
-                        }
-                    else:
-                        # 데이터가 없을 경우 fallback
+                    # 여러 기간으로 시도하여 데이터 확보
+                    success = False
+                    for period in ['5d', '1mo', '3mo']:
+                        try:
+                            hist = ticker.history(period=period)
+                            
+                            if hist is not None and len(hist) > 1 and 'Close' in hist.columns:
+                                current = hist['Close'].iloc[-1]
+                                prev_close = hist['Close'].iloc[-2]
+                                
+                                # 데이터 유효성 검사
+                                if not (pd.isna(current) or pd.isna(prev_close) or prev_close == 0):
+                                    change = ((current - prev_close) / prev_close * 100)
+                                    
+                                    result[name] = {
+                                        'current': float(current),
+                                        'change': float(change),
+                                        'success': True
+                                    }
+                                    success = True
+                                    logging.info(f"{ticker_symbol} ({period}) 데이터 수집 성공: {current:.2f}, {change:.2f}%")
+                                    break
+                                else:
+                                    continue
+                            else:
+                                continue
+                        except Exception as inner_e:
+                            logging.debug(f"{ticker_symbol} ({period}) 실패: {inner_e}")
+                            continue
+                    
+                    if not success:
+                        # 모든 기간 실패 시 fallback
+                        logging.warning(f"{ticker_symbol} 모든 기간 실패 - fallback 사용")
                         result[name] = self._get_fallback_data(name)
                         
                 except Exception as e:
@@ -136,55 +158,18 @@ def collect_global_market_data(self) -> Dict:
             logging.error(f"글로벌 시장 데이터 수집 전체 오류: {e}")
             # 전체 실패 시 모든 fallback 값 반환
             return {
-                'sp500': {'current': 5800.0, 'change': 0.5},
-                'nasdaq': {'current': 19000.0, 'change': 1.2},
-                'djia': {'current': 43000.0, 'change': 0.3},
-                'semiconductor_etf': {'current': 280.0, 'change': 2.1}
+                'sp500': self._get_fallback_data('sp500'),
+                'nasdaq': self._get_fallback_data('nasdaq'),
+                'djia': self._get_fallback_data('djia'),
+                'semiconductor_etf': self._get_fallback_data('semiconductor_etf')
             }
 
     def _get_fallback_data(self, name: str) -> Dict:
         """fallback 데이터 반환"""
         fallback_values = {
-            'sp500': {'current': 5800.0, 'change': 0.5},
-            'nasdaq': {'current': 19000.0, 'change': 1.2},
-            'djia': {'current': 43000.0, 'change': 0.3},
-            'semiconductor_etf': {'current': 280.0, 'change': 2.1}
+            'sp500': {'current': 5800.0, 'change': 0.5, 'success': False},
+            'nasdaq': {'current': 19000.0, 'change': 1.2, 'success': False},
+            'djia': {'current': 43000.0, 'change': 0.3, 'success': False},
+            'semiconductor_etf': {'current': 280.0, 'change': 2.1, 'success': False}
         }
-        return fallback_values.get(name, {'current': 0, 'change': 0})
-                }
-            except Exception as e:
-                logging.error(f"글로벌 시장 데이터 수집 오류: {e}")
-                # API 실패 시 fallback 값 반환
-                return {
-                    'sp500': {'current': 5800.0, 'change': 0.5},    # default값
-                    'nasdaq': {'current': 19000.0, 'change': 1.2},
-                    'djia': {'current': 43000.0, 'change': 0.3},
-                    'semiconductor_etf': {'current': 280.0, 'change': 2.1}
-                }
-            
-            return {
-                'sp500': {
-                    'current': sp500.history(period='1d')['Close'].iloc[-1],
-                    'change': sp500.history(period='1d')['Close'].pct_change().iloc[-1] * 100
-                },
-                'nasdaq': {
-                    'current': nasdaq.history(period='1d')['Close'].iloc[-1],
-                    'change': nasdaq.history(period='1d')['Close'].pct_change().iloc[-1] * 100
-                },
-                'djia': {
-                    'current': djia.history(period='1d')['Close'].iloc[-1],
-                    'change': djia.history(period='1d')['Close'].pct_change().iloc[-1] * 100
-                },
-                'semiconductor_etf': {
-                    'current': soxx.history(period='1d')['Close'].iloc[-1],
-                    'change': soxx.history(period='1d')['Close'].pct_change().iloc[-1] * 100
-                }
-            }
-        except Exception as e:
-            logging.error(f"글로벌 시장 데이터 수집 오류: {e}")
-            return {
-                'sp500': {'current': 0, 'change': 0},
-                'nasdaq': {'current': 0, 'change': 0},
-                'djia': {'current': 0, 'change': 0},
-                'semiconductor_etf': {'current': 0, 'change': 0}
-            }
+        return fallback_values.get(name, {'current': 0, 'change': 0, 'success': False})

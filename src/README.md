@@ -1,13 +1,16 @@
 # 다음날 오전 상승 예측 주식 추천 시스템
 
-뉴스와 시장 동향을 분석하여 다음날 오전에 오를 가능성이 큰 상위 10개 주식을 추천하는 시스템입니다.
+글로벌 데이터와 시장 동향을 분석하여 다음날 오전에 오를 가능성이 큰 상위 10개 주식을 추천하는 시스템입니다.
 
 ## 🎯 주요 기능
 
-- **실시간 뉴스 수집**: 주요 금융 매체의 최신 뉴스 자동 수집
-- **감성 분석**: 뉴스의 긍정/부정 심리 분석
-- **주식 랭킹**: 상승 가능성 기준 TOP 10 종목 선정
-- **예측 이유**: 각 종목 선정 구체적 이유 제공
+- **실시간 뉴스 수집**: 국내외 주요 금융 매체의 최신 뉴스 자동 수집
+- **글로벌 데이터 통합**: CNBC, Reuters, Bloomberg 등 외부 경제 동향 실시간 반영
+- **AI 기반 감성 분석**: 긍정/부정 키워드 자동 학습 및 감성 분석
+- **동적 섹터 가중치**: TSMC, NVIDIA, Fed 등 글로벌 이벤트에 따른 섹터 가중치 조정
+- **글로벌 연관성 분석**: TSMC→삼성전자, OpenAI→NVIDIA 등 국내외 종목 연관성 분석
+- **주식 랭킹**: 상승 가능성 기준 TOP 10 종목 선정 및 점수화
+- **예측 이유**: 각 종목 선정 구체적 이유 제공 (글로벌 변수 포함)
 - **자동 실행**: 매일 저녁 9-12시 사이 자동 분석 실행
 
 ## 🚀 설치 및 실행
@@ -89,7 +92,7 @@ python stock_ranker_main.py --output report
 - **시간**: 오전 9:00-9:30 장초반
 - **방식**: 시초가 상승 종목 중심 진입
 - **수량**: 소액 분할 매매 (5-10종목)
-- **손절**: -3% 원칙 철저
+- **손절**: -3% 원칙 철저 (글로벌 변수 반영 시 -5% 강화)
 
 ### 수익 실현
 - **목표수익**: +5% ~ +10%
@@ -105,13 +108,17 @@ python stock_ranker_main.py --output report
 
 ```
 src/
-├── main.py                    # 기존 Vertiv 주식 조회 스크립트
-├── stock_ranker_main.py       # 새로운 주식 랭킹 메인 스크립트
-├── news_collector.py          # 뉴스 수집 모듈
-├── stock_analyzer.py          # 주식 분석 및 랭킹 알고리즘
-├── stock_ranking_system.py   # 전체 시스템 통합
-├── requirements.txt           # 의존성 패키지
-└── README.md                  # 설명서
+├── main.py                        # 기존 Vertiv 주식 조회 스크립트
+├── stock_ranker_main.py           # 기존 주식 랭킹 메인 스크립트
+├── enhanced_main.py              # 글로벌 반영된 향상된 메인 스크립트
+├── news_collector.py             # 국내 뉴스 수집 모듈
+├── global_news_collector_fixed.py   # 글로벌 뉴스 수집 모듈 (수정됨)
+├── stock_analyzer.py              # 주식 분석 및 랭킹 알고리즘 (글로벌 반영 개선)
+├── enhanced_stock_ranking_system.py   # 글로벌 반영된 향상된 전체 시스템
+├── enhanced_report_functions.py   # 보고서 생성 함수 모듈
+├── requirements.txt               # 의존성 패키지
+├── enhancment_results.md           # 알고리즘 개선 보고서
+└── README.md                      # 상세 설명서
 ```
 
 ## 📊 결과 저장
