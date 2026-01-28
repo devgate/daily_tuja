@@ -2,6 +2,7 @@ requests
 beautifulsoup4
 pandas
 numpy
-yfinance
 schedule
 python-dotenv
+matplotlib
+seaborn
